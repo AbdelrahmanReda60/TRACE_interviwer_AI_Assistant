@@ -1,7 +1,6 @@
-# Campus Services Helpdesk Chatbot
-
-A bilingual (Arabic and English) chatbot that helps first-year students find answers about deadlines, registration, and university regulations. It answers only from public university documents and shows the source of every answer, following the Transparency principle.
-
-Built with FastAPI for the Human, Computer, and AI Interaction term project 2026.
+#Idea in one sentence
 
 
+An AI assistant helps a human interviewer review candidates who remain after ATS filtering by mapping each job
+requirement to evidence in each CV, showing gaps and uncertainty, summarizing strengths and areas to verify,
+and suggesting interview questions. The interviewer remains responsible for every evaluation and hiring decision
