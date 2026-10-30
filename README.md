@@ -1,4 +1,4 @@
-#Idea in one sentence
+# Idea in one sentence
 
 
 An AI assistant helps a human interviewer review candidates who remain after ATS filtering by mapping each job
