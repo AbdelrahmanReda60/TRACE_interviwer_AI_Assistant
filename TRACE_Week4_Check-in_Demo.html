@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRACE · Fictional Evidence Review Demo (Week 4)</title>
+  <style>
+    /* CSS Variables & Theme */
+    :root {
+      --navy-950: #0a192f;
+      --navy-900: #0f2744;
+      --navy-800: #19385c;
+      --navy-700: #234b75;
+      --teal-800: #115e59;
+      --teal-700: #0f766e;
+      --teal-600: #0d9488;
+      --teal-50: #f0fdfa;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-300: #cbd5e1;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --emerald-800: #065f46;
+      --emerald-700: #047857;
+      --emerald-600: #059669;
+      --emerald-100: #d1fae5;
+      --emerald-50: #ecfdf5;
+      --amber-900: #78350f;
+      --amber-800: #92400e;
+      --amber-700: #b45309;
+      --amber-100: #fef3c7;
+      --amber-50: #fffbeb;
+      --rose-800: #9f1239;
+      --rose-700: #be123c;
+      --rose-100: #ffe4e6;
+      --rose-50: #fff1f2;
+      --focus-ring: #0284c7;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+      --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: var(--slate-800);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Accessibility Focus States */
+    :focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    /* Layout Wrapper */
+    .app-container {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Top Brand Header */
+    .header-card {
+      background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 22px 28px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+    }
+
+    .brand-subtitle {
+      font-size: 0.94rem;
+      color: #cbd5e1;
+      max-width: 680px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-header-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .btn-header-secondary:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-primary {
+      background: var(--navy-900);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: var(--navy-800);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--slate-700);
+      border-color: var(--slate-300);
+    }
+    .btn-secondary:hover {
+      background: var(--slate-50);
+      border-color: var(--slate-400);
+      color: var(--slate-900);
+    }
+
+    .btn-danger-subtle {
+      background: #ffffff;
+      color: var(--rose-700);
+      border-color: var(--slate-200);
+    }
+    .btn-danger-subtle:hover {
+      background: var(--rose-50);
+      border-color: var(--rose-100);
+    }
+
+    .btn-teal {
+      background: var(--teal-700);
+      color: #ffffff;
+    }
+    .btn-teal:hover {
+      background: var(--teal-800);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* Scope & Safeguard Notice Banner */
+    .scope-banner {
+      background: #ffffff;
+      border-left: 4px solid var(--teal-700);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      border-top: 1px solid var(--slate-200);
+      border-right: 1px solid var(--slate-200);
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .scope-icon {
+      color: var(--teal-700);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .scope-text {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--slate-700);
+    }
+
+    .scope-text strong {
+      color: var(--navy-900);
+    }
+
+    /* Workbench Controls / Setup Row */
+    .workbench-setup {
+      display: grid;
+      grid-template-columns: 1.2fr 1.8fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .workbench-setup {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--slate-600);
+    }
+
+    .select-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      color: var(--slate-800);
+      background-color: #ffffff;
+      transition: border-color 0.15s ease;
+    }
+    .select-input:focus {
+      border-color: var(--teal-600);
+    }
+
+    .confirmed-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--teal-800);
+      background: var(--teal-50);
+      border: 1px solid #ccfbf1;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    /* Candidate Quick Switcher Tabs */
+    .candidate-pills {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .candidate-pills {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .candidate-pill {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 8px 6px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+    .candidate-pill:hover {
+      background: #ffffff;
+      border-color: var(--slate-300);
+    }
+    .candidate-pill.active {
+      background: var(--navy-900);
+      color: #ffffff;
+      border-color: var(--navy-900);
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.15);
+    }
+    .candidate-pill .pill-id {
+      font-size: 0.95rem;
+      font-weight: 750;
+    }
+    .candidate-pill .pill-role {
+      font-size: 0.72rem;
+      color: var(--slate-500);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+    .candidate-pill.active .pill-role {
+      color: #94a3b8;
+    }
+    .candidate-pill .pill-cov {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--teal-700);
+    }
+    .candidate-pill.active .pill-cov {
+      color: #5eead4;
+    }
+
+    /* Candidate Overview & Evidence Coverage Banner */
+    .candidate-overview-card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .overview-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .candidate-header-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .candidate-name-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .candidate-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--navy-900);
+    }
+
+    .candidate-subtext {
+      font-size: 0.88rem;
+      color: var(--slate-500);
+    }
+
+    /* Prominent Evidence Coverage Block */
+    .coverage-highlight-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 320px;
+      max-width: 480px;
+    }
+
+    .coverage-stat-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .coverage-label-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .coverage-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate-600);
+    }
+
+    .coverage-count-text {
+      font-size: 0.88rem;
+      color: var(--slate-700);
+      font-weight: 600;
+    }
+
+    .coverage-number-badge {
+      font-size: 2.1rem;
+      font-weight: 850;
+      color: var(--navy-900);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    /* Progress bar breakdown */
+    .coverage-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: var(--slate-200);
+      gap: 2px;
+    }
+
+    .bar-segment {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    .bar-found {
+      background-color: var(--emerald-600);
+    }
+    .bar-unclear {
+      background-color: var(--amber-700);
+    }
+    .bar-missing {
+      background-color: var(--slate-400);
+    }
+
+    .coverage-legend {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.75rem;
+      color: var(--slate-600);
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .dot-found { background-color: var(--emerald-600); }
+    .dot-unclear { background-color: var(--amber-700); }
+    .dot-missing { background-color: var(--slate-400); }
+
+    .coverage-disclaimer {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: var(--slate-500);
+      border-top: 1px dashed var(--slate-200);
+      padding-top: 8px;
+    }
+
+    /* Balanced Strengths & Gaps Summary */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--slate-100);
+    }
+
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .summary-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .summary-col-header {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .summary-col-header.strengths {
+      color: var(--emerald-800);
+    }
+    .summary-col-header.gaps {
+      color: var(--amber-900);
+    }
+
+    .summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .summary-item {
+      font-size: 0.84rem;
+      color: var(--slate-700);
+      background: var(--slate-50);
+      border-radius: var(--radius-sm);
+      padding: 7px 11px;
+      border-left: 3px solid var(--slate-300);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .summary-item.strength-item {
+      border-left-color: var(--emerald-600);
+      background: var(--emerald-50);
+    }
+    .summary-item.gap-item {
+      border-left-color: var(--amber-700);
+      background: var(--amber-50);
+    }
+    .summary-item-title {
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+    .summary-item-note {
+      font-size: 0.78rem;
+      color: var(--slate-600);
+    }
+
+    /* Main Two-Column Workbench */
+    .workbench-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(360px, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .workbench-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Requirements Review Section */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 750;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .view-toggles {
+      display: inline-flex;
+      background: var(--slate-200);
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      gap: 2px;
+    }
+
+    .view-toggle-btn {
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: transparent;
+      border: 0;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--slate-600);
+      transition: all 0.15s ease;
+    }
+    .view-toggle-btn.active {
+      background: #ffffff;
+      color: var(--navy-900);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Requirement Cards List */
+    .req-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .req-card {
+      background: #ffffff;
+      border: 2px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .req-card:hover {
+      border-color: var(--slate-300);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+
+    .req-card.selected {
+      border-color: var(--navy-900);
+      box-shadow: 0 0 0 1px var(--navy-900), var(--shadow-md);
+      background-color: #ffffff;
+    }
+
+    .req-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .req-title-desc {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .req-name {
+      font-size: 1rem;
+      font-weight: 750;
+      color: var(--slate-900);
+    }
+
+    .req-jd-desc {
+      font-size: 0.82rem;
+      color: var(--slate-500);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-badge.found {
+      background: var(--emerald-50);
+      color: var(--emerald-800);
+      border: 1px solid var(--emerald-100);
+    }
+
+    .status-badge.unclear {
+      background: var(--amber-50);
+      color: var(--amber-900);
+      border: 1px solid var(--amber-100);
+    }
+
+    .status-badge.missing {
+      background: var(--slate-100);
+      color: var(--slate-600);
+      border: 1px solid var(--slate-300);
+    }
+
+    .req-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      color: var(--slate-600);
+      border-top: 1px solid var(--slate-100);
+      padding-top: 10px;
+      gap: 8px;
+    }
+
+    .req-card-reason {
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    .req-inspect-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--teal-700);
+      flex-shrink: 0;
+    }
+
+    /* All-Candidates Matrix View (Optional Mode) */
+    .matrix-wrapper {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .matrix-scroll {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      min-width: 680px;
+    }
+
+    .matrix-table th, .matrix-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--slate-200);
+      text-align: left;
+    }
+
+    .matrix-table thead th {
+      background: var(--navy-900);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .matrix-table thead th:first-child {
+      text-align: left;
+    }
+
+    .matrix-cell-btn {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--slate-200);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      background: #ffffff;
+      transition: all 0.15s ease;
+    }
+    .matrix-cell-btn:hover {
+      filter: brightness(0.96);
+    }
+    .matrix-cell-btn.found {
+      background: var(--emerald-50);
+      color: var(--emerald-800);
+      border-color: var(--emerald-100);
+    }
+    .matrix-cell-btn.unclear {
+      background: var(--amber-50);
+      color: var(--amber-900);
+      border-color: var(--amber-100);
+    }
+    .matrix-cell-btn.missing {
+      background: var(--slate-100);
+      color: var(--slate-600);
+      border-color: var(--slate-300);
+    }
+    .matrix-cell-btn.active-cell {
+      outline: 2px solid var(--navy-900);
+      outline-offset: 1px;
+    }
+
+    /* Right Column: Evidence Detail & Workbench Inspector */
+    .inspector-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .inspector-card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .inspector-header {
+      border-bottom: 1px solid var(--slate-100);
+      padding-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .inspector-req-tag {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate-500);
+    }
+
+    .inspector-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      line-height: 1.3;
+    }
+
+    .inspector-jd-desc {
+      font-size: 0.84rem;
+      color: var(--slate-600);
+      background: var(--slate-50);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--teal-600);
+    }
+
+    /* Cited CV Excerpt Box */
+    .excerpt-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .excerpt-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate-600);
+    }
+
+    .excerpt-citation-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--teal-800);
+      background: var(--teal-50);
+      border: 1px solid #ccfbf1;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .cv-quote-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-left: 4px solid var(--teal-700);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 14px;
+      font-size: 0.94rem;
+      line-height: 1.5;
+      color: var(--slate-900);
+      position: relative;
+    }
+
+    .cv-quote-box.empty {
+      border-left-color: var(--slate-400);
+      color: var(--slate-600);
+      font-style: italic;
+      background: #fafafa;
+    }
+
+    /* Explanation & Rationale Box */
+    .rationale-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rationale-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate-600);
+    }
+
+    .rationale-text {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--slate-700);
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--slate-200);
+    }
+
+    /* Optional Follow-up Question Box */
+    .question-builder-card {
+      background: #f8fafc;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .qb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .qb-title {
+      font-size: 0.82rem;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qb-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--slate-200);
+      color: var(--slate-700);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .qb-text-area {
+      width: 100%;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--slate-800);
+      background: #ffffff;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      resize: vertical;
+      min-height: 60px;
+      font-family: inherit;
+    }
+
+    .qb-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Human Oversight & Correction Drawer/Card */
+    .oversight-card {
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .oversight-title {
+      font-size: 0.82rem;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--slate-700);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .override-form {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .override-select {
+      flex: 1;
+      min-width: 160px;
+      padding: 7px 10px;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      background: #ffffff;
+    }
+
+    .feedback-banner {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--teal-800);
+      background: var(--teal-50);
+      border: 1px solid #ccfbf1;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Interviewer Notes & Scratchpad */
+    .notes-section {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .notes-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .notes-title {
+      font-size: 1.1rem;
+      font-weight: 750;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notes-subtitle {
+      font-size: 0.84rem;
+      color: var(--slate-500);
+    }
+
+    .notes-textarea {
+      width: 100%;
+      min-height: 110px;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      line-height: 1.5;
+      color: var(--slate-800);
+      background: #fafafa;
+      transition: all 0.15s ease;
+    }
+    .notes-textarea:focus {
+      background: #ffffff;
+      border-color: var(--navy-900);
+    }
+
+    .notes-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .notes-left-btns, .notes-right-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Flag Modal Dialog */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 580px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--slate-200);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      background: var(--navy-900);
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 750;
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: 0;
+      color: #ffffff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      background: var(--slate-50);
+      border-top: 1px solid var(--slate-200);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Presentation Walkthrough Guide Modal / Banner */
+    .walkthrough-step-card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .walkthrough-step-card.active-step {
+      border-color: var(--teal-600);
+      background: var(--teal-50);
+    }
+    .step-num-title {
+      font-size: 0.86rem;
+      font-weight: 750;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-text {
+      font-size: 0.82rem;
+      color: var(--slate-600);
+      line-height: 1.45;
+    }
+
+    /* Footer */
+    .app-footer {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      font-size: 0.82rem;
+      color: var(--slate-600);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      line-height: 1.5;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px solid var(--slate-100);
+      padding-bottom: 10px;
+    }
+
+    .footer-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-tag {
+      background: var(--slate-100);
+      color: var(--slate-700);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--navy-950);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: fadeIn 0.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Scope & Safeguards Notice -->
+    <div class="scope-banner" role="note" aria-label="System scope and ethical safeguards">
+      <div class="scope-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      </div>
+      <div class="scope-text" style="flex: 1;">
+        <strong>Human-in-the-Loop Scope & Safeguards:</strong> TRACE is an interactive evaluation tool used <em>after</em> ATS filtering to assist a human interviewer. It compares one remaining candidate's CV against human-confirmed job requirements, displays exact citations, and suggests optional follow-up questions. <strong>“No evidence found in CV” indicates absence of written documentation, not absence of skill.</strong> TRACE does not rank candidates, calculate automated rejection scores, or make hiring decisions.
+      </div>
+      <div style="display: flex; gap: 8px; flex-shrink: 0; align-items: center; margin-left: auto;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-open-guide">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          How to present this demo
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-demo" title="Restore initial synthetic data">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          Reset demo
+        </button>
+      </div>
+    </div>
+
+    <!-- Review Setup & Candidate Selector Grid -->
+    <section class="workbench-setup" aria-label="Review configuration">
+      <!-- Role / Job Description Card -->
+      <div class="card">
+        <div class="card-title">
+          <span>Job Description (JD)</span>
+          <span class="confirmed-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Human-Confirmed
+          </span>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="select-role">Selected Fictional Role</label>
+          <select id="select-role" class="select-input">
+            <option value="SWE-J1">Junior Software Engineer · Synthetic JD v1 (5 Confirmed Requirements)</option>
+          </select>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--slate-500); line-height: 1.4;">
+          All 5 criteria were verified and approved by the hiring panel before candidate comparison. Requirements cannot be modified without human reviewer authorization.
+        </p>
+      </div>
+
+      <!-- Candidate Selector Card -->
+      <div class="card">
+        <div class="card-title">
+          <span>Select Candidate for Single-CV Review</span>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--slate-500);">6 Fictional Candidates</span>
+        </div>
+        <div class="field-group" style="margin-bottom: 6px;">
+          <label class="field-label" id="candidate-selector-label">Active Candidate Profile (Post-ATS)</label>
+          <div class="candidate-pills" role="tablist" aria-labelledby="candidate-selector-label" id="candidate-pills-container">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--slate-500); display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+          <span>Candidate data is synthetic and anonymized for coursework.</span>
+          <span id="candidate-quick-stat" style="font-weight: 600; color: var(--navy-900);"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Candidate Overview & Evidence Coverage Banner -->
+    <section class="candidate-overview-card" aria-label="Candidate evidence summary and coverage">
+      <div class="overview-top-row">
+        <div class="candidate-header-meta">
+          <div class="candidate-name-badge">
+            <h2 class="candidate-title" id="overview-candidate-id">Candidate C-01</h2>
+            <span class="brand-badge" style="background: var(--slate-100); color: var(--navy-900); border-color: var(--slate-300);">Post-ATS Finalist</span>
+          </div>
+          <div class="candidate-subtext" id="overview-candidate-subtext">Backend & Automation Profile · Synthetic CV v1 (Page 1)</div>
+        </div>
+
+        <!-- Prominent Evidence Coverage Block -->
+        <div class="coverage-highlight-box" aria-labelledby="coverage-heading">
+          <div class="coverage-stat-row">
+            <div class="coverage-label-group">
+              <span class="coverage-title" id="coverage-heading">Evidence Coverage</span>
+              <span class="coverage-count-text" id="coverage-count-display">3 of 5 requirements have clear CV evidence</span>
+            </div>
+            <div class="coverage-number-badge" id="coverage-pct-display">60%</div>
+          </div>
+
+          <!-- Coverage breakdown visual bar -->
+          <div class="coverage-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" id="coverage-progress-bar" title="Evidence breakdown">
+            <div class="bar-segment bar-found" id="bar-found" style="width: 60%;"></div>
+            <div class="bar-segment bar-unclear" id="bar-unclear" style="width: 20%;"></div>
+            <div class="bar-segment bar-missing" id="bar-missing" style="width: 20%;"></div>
+          </div>
+
+          <div class="coverage-legend" aria-hidden="true">
+            <div class="legend-item"><span class="legend-dot dot-found"></span> <span id="leg-found">3 Found</span></div>
+            <div class="legend-item"><span class="legend-dot dot-unclear"></span> <span id="leg-unclear">1 Unclear</span></div>
+            <div class="legend-item"><span class="legend-dot dot-missing"></span> <span id="leg-missing">1 Not Found</span></div>
+          </div>
+
+          <div class="coverage-disclaimer">
+            <strong>Scope definition:</strong> This describes evidence found in this CV only. It is not a measure of the person’s ability, an overall fit score, or a hiring recommendation.
+          </div>
+        </div>
+      </div>
+
+      <!-- Strengths and Gaps Summary (Dynamically grounded in displayed evidence) -->
+      <div class="summary-grid" aria-label="Evidence-backed strengths and areas to verify">
+        <div class="summary-column">
+          <div class="summary-col-header strengths">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Evidence-Backed Strengths in CV
+          </div>
+          <ul class="summary-list" id="strengths-list">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+
+        <div class="summary-column">
+          <div class="summary-col-header gaps">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            Items to Verify / Gaps in Documentation
+          </div>
+          <ul class="summary-list" id="gaps-list">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Two-Column Review Layout -->
+    <main class="workbench-main">
+
+      <!-- Left Column: Requirements Review Cards List -->
+      <section aria-labelledby="review-section-title">
+        <div class="section-header">
+          <div class="section-title" id="review-section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Job Requirements Review
+          </div>
+          <div class="view-toggles" role="group" aria-label="Layout view mode">
+            <button type="button" class="view-toggle-btn active" id="btn-view-cards" aria-pressed="true">Focused Cards View</button>
+            <button type="button" class="view-toggle-btn" id="btn-view-matrix" aria-pressed="false">All Candidates Matrix</button>
+          </div>
+        </div>
+
+        <!-- Mode A: Requirements Cards Review (Primary Default) -->
+        <div id="cards-view-container" class="req-cards-list" role="list" aria-label="Requirements evaluation list">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Mode B: 6-Candidate Matrix Overview (Optional comparison view) -->
+        <div id="matrix-view-container" class="matrix-wrapper" style="display: none;">
+          <div class="matrix-scroll">
+            <table class="matrix-table" aria-label="All candidates comparison matrix">
+              <thead>
+                <tr>
+                  <th scope="col" style="min-width: 180px;">Job Requirement</th>
+                  <th scope="col">C-01</th>
+                  <th scope="col">C-02</th>
+                  <th scope="col">C-03</th>
+                  <th scope="col">C-04</th>
+                  <th scope="col">C-05</th>
+                  <th scope="col">C-06</th>
+                </tr>
+              </thead>
+              <tbody id="matrix-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+          <div style="padding: 10px 14px; background: var(--slate-50); font-size: 0.78rem; color: var(--slate-600); border-top: 1px solid var(--slate-200);">
+            Click any status cell to inspect its exact citation and explanation in the right-hand inspector.
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Evidence Detail & Human Control Inspector -->
+      <aside class="inspector-column" aria-label="Requirement evidence detail and controls">
+        <div class="inspector-card">
+          <div class="inspector-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="inspector-req-tag" id="insp-req-tag">Requirement 1 of 5</span>
+              <span id="insp-status-badge" class="status-badge found">✓ Evidence found</span>
+            </div>
+            <h3 class="inspector-title" id="insp-req-title">Python programming</h3>
+            <div class="inspector-jd-desc" id="insp-jd-desc">Write maintainable Python scripts or services for data manipulation and automation.</div>
+          </div>
+
+          <!-- Documented Excerpt Box -->
+          <div class="excerpt-container">
+            <div class="excerpt-label-row">
+              <span>This is what the CV says:</span>
+              <span class="excerpt-citation-badge" id="insp-citation-tag">Projects · p.1</span>
+            </div>
+            <blockquote class="cv-quote-box" id="insp-quote-box">
+              “Wrote a Python script to validate weekly inventory reports.”
+            </blockquote>
+          </div>
+
+          <!-- Rationale & Explanation -->
+          <div class="rationale-box">
+            <div class="rationale-title">Why it was marked this way:</div>
+            <div class="rationale-text" id="insp-rationale-text">
+              The CV explicitly names Python and describes a related task.
+            </div>
+          </div>
+
+          <!-- Optional Follow-up Question Builder -->
+          <div class="question-builder-card">
+            <div class="qb-header">
+              <span class="qb-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Suggested Follow-Up Question
+              </span>
+              <span class="qb-badge">Optional & Editable</span>
+            </div>
+            <textarea class="qb-text-area" id="qb-input" aria-label="Suggested interview question text" rows="2"></textarea>
+            <div class="qb-actions">
+              <button type="button" class="btn btn-teal btn-sm" id="btn-add-question">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add question to notes
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-question" title="Restore suggested question">
+                Reset text
+              </button>
+            </div>
+          </div>
+
+          <!-- Human Oversight: Override Evidence State & Flag Issue -->
+          <div class="oversight-card">
+            <div class="oversight-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Human Oversight & Correction
+            </div>
+            <div class="override-form">
+              <label for="override-select-state" class="visually-hidden" style="display:none;">Correct evidence status</label>
+              <select id="override-select-state" class="override-select">
+                <option value="Found">✓ Evidence found</option>
+                <option value="Unclear">? Needs verification</option>
+                <option value="Not found in CV">— No evidence found in CV</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" id="btn-apply-override">
+                Apply correction
+              </button>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 4px;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-open-flag-modal" style="width: 100%;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                Flag citation or interpretation issue
+              </button>
+            </div>
+
+            <div class="feedback-banner" id="session-feedback-banner" role="status" aria-live="polite">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span id="feedback-banner-text">Updated for current browser session.</span>
+            </div>
+
+            <div style="font-size: 0.74rem; color: var(--slate-500); line-height: 1.35;">
+              Changes update evidence coverage and summaries in this browser session only. No data is sent or saved permanently.
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- Interviewer Notes & Scratchpad -->
+    <section class="notes-section" aria-labelledby="notes-section-title">
+      <div class="notes-header">
+        <div>
+          <h2 class="notes-title" id="notes-section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            Interviewer Personal Notes & Question Scratchpad
+          </h2>
+          <div class="notes-subtitle">
+            All notes remain strictly in your browser session. Add suggested questions above or type personal interview observations.
+          </div>
+        </div>
+      </div>
+
+      <textarea id="interviewer-notes-area" class="notes-textarea" placeholder="Selected follow-up questions and personal interviewer notes will appear here. You can freely edit, reorder, or draft custom questions..."></textarea>
+
+      <div class="notes-actions">
+        <div class="notes-left-btns">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-notes">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy notes to clipboard
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-download-notes">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download notes (.txt)
+          </button>
+        </div>
+        <div class="notes-right-btns">
+          <button type="button" class="btn btn-danger-subtle btn-sm" id="btn-clear-notes">
+            Clear notes
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer" role="contentinfo">
+      <div class="footer-top">
+        <div style="font-weight: 700; color: var(--navy-900);">
+          TRACE · Human-Computer & AI Interaction Term Project (Milestone 2 · Week 4)
+        </div>
+        <div class="footer-badges">
+          <span class="footer-tag">Educational Prototype</span>
+          <span class="footer-tag">HAI Principle: Transparency</span>
+          <span class="footer-tag">Zero External Network Calls</span>
+        </div>
+      </div>
+      <div>
+        <strong>System & Data Limitations:</strong> This interactive prototype uses synthetic, project-created data for classroom demonstration only. The current demo executes entirely in client-side JavaScript without live model APIs. The 30 evidence pairs test transparent human-AI collaboration and uncertainty communication after ATS filtering. All final evaluation, interviewing, and hiring decisions remain solely with human reviewers.
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Modal 1: How to Present this Demo (Walkthrough Guide) -->
+  <div class="modal-overlay" id="modal-guide" role="dialog" aria-modal="true" aria-labelledby="modal-guide-title">
+    <div class="modal-box" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-guide-title">How to Present TRACE (Classroom Run of Show)</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-guide" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: var(--slate-700);">
+          Follow this 5-step walkthrough during the Week 4 check-in to demonstrate the core Human-AI Interaction (HAI) principles:
+        </p>
+
+        <div class="walkthrough-step-card" id="wt-step-1">
+          <div class="step-num-title">
+            <span class="status-badge" style="background: var(--navy-900); color: #fff;">Step 1</span>
+            Explain Scope & Post-ATS Framing
+          </div>
+          <p class="step-text">
+            Point out the top scope banner: TRACE operates <em>after</em> initial ATS filtering for a single remaining candidate. Emphasize that TRACE does not rank candidates, reject applicants, or make hiring decisions.
+          </p>
+        </div>
+
+        <div class="walkthrough-step-card" id="wt-step-2">
+          <div class="step-num-title">
+            <span class="status-badge" style="background: var(--navy-900); color: #fff;">Step 2</span>
+            Inspect Evidence Coverage & Disclaimers
+          </div>
+          <p class="step-text">
+            Show the prominent <strong>Evidence Coverage</strong> metric (e.g. 60% for C-01). Explain that it is defined strictly as <code>(Found ÷ Total) × 100</code>. Point to the clear disclaimer: it describes documentation in the CV, never candidate ability or hiring fitness.
+          </p>
+        </div>
+
+        <div class="walkthrough-step-card" id="wt-step-3">
+          <div class="step-num-title">
+            <span class="status-badge" style="background: var(--navy-900); color: #fff;">Step 3</span>
+            Inspect Exact Source Excerpts vs Ambiguity
+          </div>
+          <p class="step-text">
+            Click on <strong>Python programming</strong> (Found) to show the exact cited excerpt from <em>Projects · p.1</em>. Then click on <strong>Cloud deployment</strong> (Needs verification) or <strong>Team leadership</strong> (No evidence found in CV) to demonstrate how TRACE surfaces uncertainty instead of hallucinating.
+          </p>
+        </div>
+
+        <div class="walkthrough-step-card" id="wt-step-4">
+          <div class="step-num-title">
+            <span class="status-badge" style="background: var(--navy-900); color: #fff;">Step 4</span>
+            Human Control & Question Builder
+          </div>
+          <p class="step-text">
+            Show the optional follow-up interview question. Edit the wording and click <strong>“Add question to notes”</strong> to prepare your interview guide.
+          </p>
+        </div>
+
+        <div class="walkthrough-step-card" id="wt-step-5">
+          <div class="step-num-title">
+            <span class="status-badge" style="background: var(--navy-900); color: #fff;">Step 5</span>
+            Override Evidence Label & Live Recalculation
+          </div>
+          <p class="step-text">
+            Use the <strong>Human Oversight</strong> control to change a status (e.g., change Cloud to “Evidence found”). Point out how the Evidence Coverage percentage and the Strengths/Gaps summary immediately recalculate dynamically!
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-teal" id="btn-finish-guide">Got it, let's start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Flag Citation / Evidence Issue -->
+  <div class="modal-overlay" id="modal-flag" role="dialog" aria-modal="true" aria-labelledby="modal-flag-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-flag-title">Flag Citation or Interpretation Issue</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-flag" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.88rem; color: var(--slate-700);">
+          You are reporting an issue for: <strong id="flag-modal-target">C-01 · Python programming</strong>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="flag-issue-type">Issue Category</label>
+          <select id="flag-issue-type" class="select-input">
+            <option value="citation-mismatch">Citation mismatch (Quote does not match cited page/section)</option>
+            <option value="misinterpretation">Misinterpreted wording (Skill was exaggerated or misunderstood)</option>
+            <option value="missing-context">Missing context (Surrounding sentence changes the meaning)</option>
+            <option value="inappropriate-question">Inappropriate or non-neutral follow-up question</option>
+            <option value="other">Other feedback</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="flag-notes">Observation Details (Optional)</label>
+          <textarea id="flag-notes" class="select-input" rows="3" placeholder="Describe the discrepancy for the audit log..."></textarea>
+        </div>
+
+        <div style="font-size: 0.78rem; color: var(--slate-500);">
+          This feedback simulates Level 4 of the HAI Principle Ladder (Enable Feedback). Recorded locally in current session.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-cancel-flag">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-submit-flag">Submit Flag</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Center -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Application Logic -->
+  <script>
+    /**
+     * TRACE Interactive Prototype Dataset
+     * 6 Fictional Candidates (C-01 to C-06)
+     * 5 Human-Confirmed Requirements
+     * 30 Synthetic Evidence Pairs
+     */
+    const INITIAL_CANDIDATES = [
+      { id: 'C-01', label: 'C-01', title: 'Backend applicant', subtext: 'Backend & Automation Focus · Synthetic CV v1 (1 page)' },
+      { id: 'C-02', label: 'C-02', title: 'Operations applicant', subtext: 'Release & Infrastructure Focus · Synthetic CV v1 (1 page)' },
+      { id: 'C-03', label: 'C-03', title: 'Full-stack applicant', subtext: 'Web & Tools Focus · Synthetic CV v1 (1 page)' },
+      { id: 'C-04', label: 'C-04', title: 'Systems applicant', subtext: 'Cloud & Systems Focus · Synthetic CV v1 (1 page)' },
+      { id: 'C-05', label: 'C-05', title: 'Data applicant', subtext: 'Data & Reporting Focus · Synthetic CV v1 (1 page)' },
+      { id: 'C-06', label: 'C-06', title: 'Support & Cloud applicant', subtext: 'Team & Services Focus · Synthetic CV v1 (1 page)' }
+    ];
+
+    const INITIAL_REQUIREMENTS = [
+      {
+        id: 'req-python',
+        name: 'Python programming',
+        jdDesc: 'Write maintainable Python scripts or services for data manipulation and backend automation.',
+        defaultQuestion: 'Can you describe a project where you used Python, and what specific parts you personally implemented?',
+        cells: [
+          // C-01
+          {
+            state: 'Found',
+            excerpt: 'Wrote a Python script to validate weekly inventory reports.',
+            loc: 'Projects · p.1',
+            why: 'The CV explicitly names Python and describes a related data validation task.'
+          },
+          // C-02
+          {
+            state: 'Unclear',
+            excerpt: 'Automated weekly reports using a scripting language.',
+            loc: 'Experience · p.1',
+            why: 'Automation scripting is described, but the specific programming language is not identified.'
+          },
+          // C-03
+          {
+            state: 'Found',
+            excerpt: 'Built a small Python tool to clean and merge CSV files.',
+            loc: 'Projects · p.1',
+            why: 'The CV explicitly names Python and a concrete data processing task.'
+          },
+          // C-04
+          {
+            state: 'Not found in CV',
+            excerpt: '',
+            loc: '',
+            why: 'No supporting Python text was located in this fictional CV.'
+          },
+          // C-05
+          {
+            state: 'Found',
+            excerpt: 'Used Python and pandas to summarize test results.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly names Python, pandas, and a data summarization task.'
+          },
+          // C-06
+          {
+            state: 'Unclear',
+            excerpt: 'Created data-cleaning scripts for a research project.',
+            loc: 'Projects · p.1',
+            why: 'Scripting work is stated, but the programming language is not named.'
+          }
+        ]
+      },
+      {
+        id: 'req-cloud',
+        name: 'Cloud deployment',
+        jdDesc: 'Deploy and configure containerized applications on cloud infrastructure (e.g. AWS, GCP, or Azure).',
+        defaultQuestion: 'Can you describe an application you deployed to a cloud platform and your exact role in that work?',
+        cells: [
+          // C-01
+          {
+            state: 'Unclear',
+            excerpt: 'Packaged a service with Docker for a team project.',
+            loc: 'Projects · p.1',
+            why: 'Containerization is documented, but the CV does not name a cloud platform or hosting environment.'
+          },
+          // C-02
+          {
+            state: 'Found',
+            excerpt: 'Deployed a containerized test service to a cloud virtual machine.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly describes deploying a containerized service to cloud infrastructure.'
+          },
+          // C-03
+          {
+            state: 'Not found in CV',
+            excerpt: '',
+            loc: '',
+            why: 'No supporting cloud deployment text was located in this fictional CV.'
+          },
+          // C-04
+          {
+            state: 'Found',
+            excerpt: 'Deployed a small web service to a cloud platform and monitored logs.',
+            loc: 'Projects · p.1',
+            why: 'The CV explicitly describes deploying a web service to a cloud platform and log monitoring.'
+          },
+          // C-05
+          {
+            state: 'Unclear',
+            excerpt: 'Maintained a CI/CD pipeline for containerized services.',
+            loc: 'Experience · p.1',
+            why: 'Pipeline maintenance is stated, but direct cloud deployment or configuration is not established.'
+          },
+          // C-06
+          {
+            state: 'Found',
+            excerpt: 'Configured a cloud-hosted application and its deployment workflow.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly connects an application with cloud hosting and deployment configuration.'
+          }
+        ]
+      },
+      {
+        id: 'req-leadership',
+        name: 'Team leadership',
+        jdDesc: 'Coordinate sprint tasks, mentor peers, or lead technical handoffs across a team.',
+        defaultQuestion: 'Tell me about a time you coordinated work across a team. What was your specific responsibility?',
+        cells: [
+          // C-01
+          {
+            state: 'Not found in CV',
+            excerpt: '',
+            loc: '',
+            why: 'No supporting team-leadership or coordination text was located in this fictional CV.'
+          },
+          // C-02
+          {
+            state: 'Found',
+            excerpt: 'Coordinated a three-person release task and tracked handoffs.',
+            loc: 'Experience · p.1',
+            why: 'The CV describes explicit coordination responsibility and handoff tracking.'
+          },
+          // C-03
+          {
+            state: 'Unclear',
+            excerpt: 'Contributed to a group project delivered by a five-person team.',
+            loc: 'Projects · p.1',
+            why: 'Team participation is stated, but personal leadership or coordination responsibility is unclear.'
+          },
+          // C-04
+          {
+            state: 'Found',
+            excerpt: 'Led sprint planning for a four-person student software team.',
+            loc: 'Projects · p.1',
+            why: 'The CV explicitly describes leading sprint planning for a project team.'
+          },
+          // C-05
+          {
+            state: 'Not found in CV',
+            excerpt: '',
+            loc: '',
+            why: 'No supporting team-leadership text was located in this fictional CV.'
+          },
+          // C-06
+          {
+            state: 'Found',
+            excerpt: 'Mentored two new team members and coordinated code reviews.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly describes mentoring peers and coordinating team code reviews.'
+          }
+        ]
+      },
+      {
+        id: 'req-sql',
+        name: 'SQL & Data querying',
+        jdDesc: 'Query relational databases using joins, grouping, and structured data extraction.',
+        defaultQuestion: 'Could you walk me through a query or data analysis task where you used SQL?',
+        cells: [
+          // C-01
+          {
+            state: 'Found',
+            excerpt: 'Used SQL joins to combine order and inventory tables.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly names SQL and specifies relational joins across tables.'
+          },
+          // C-02
+          {
+            state: 'Unclear',
+            excerpt: 'Prepared relational reports for a service dashboard.',
+            loc: 'Experience · p.1',
+            why: 'Relational reporting is mentioned, but SQL usage is not explicitly stated.'
+          },
+          // C-03
+          {
+            state: 'Found',
+            excerpt: 'Wrote SQL queries to check data consistency in a sample database.',
+            loc: 'Projects · p.1',
+            why: 'The CV explicitly names SQL and describe writing queries against a database.'
+          },
+          // C-04
+          {
+            state: 'Unclear',
+            excerpt: 'Maintained a database report; query language not specified.',
+            loc: 'Experience · p.1',
+            why: 'Database reporting is mentioned without identifying SQL as the query language.'
+          },
+          // C-05
+          {
+            state: 'Found',
+            excerpt: 'Queried a sample customer database with SQL filters and joins.',
+            loc: 'Projects · p.1',
+            why: 'The CV explicitly names SQL, filters, and joins in a database context.'
+          },
+          // C-06
+          {
+            state: 'Found',
+            excerpt: 'Built SQL summaries for weekly service metrics.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly names SQL and summarizes service metrics.'
+          }
+        ]
+      },
+      {
+        id: 'req-comm',
+        name: 'Customer-facing communication',
+        jdDesc: 'Explain technical topics clearly to non-technical stakeholders, clients, or cross-functional partners.',
+        defaultQuestion: 'How have you explained a complex technical issue to someone outside the technical team?',
+        cells: [
+          // C-01
+          {
+            state: 'Unclear',
+            excerpt: 'Prepared a written handover for an internal project team.',
+            loc: 'Experience · p.1',
+            why: 'Written documentation is documented, but customer-facing or non-technical communication is unclear.'
+          },
+          // C-02
+          {
+            state: 'Found',
+            excerpt: 'Explained service updates to non-technical operations colleagues.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly describes explaining technical work to a non-technical audience.'
+          },
+          // C-03
+          {
+            state: 'Found',
+            excerpt: 'Presented a data-tool walkthrough to student users.',
+            loc: 'Projects · p.1',
+            why: 'The CV describes conducting a live tool walkthrough for non-developer end users.'
+          },
+          // C-04
+          {
+            state: 'Found',
+            excerpt: 'Wrote release notes and answered user questions during rollout.',
+            loc: 'Experience · p.1',
+            why: 'The CV explicitly describes communicating with end users and answering questions.'
+          },
+          // C-05
+          {
+            state: 'Found',
+            excerpt: 'Created a plain-language guide for customers using a reporting tool.',
+            loc: 'Experience · p.1',
+            why: 'The CV describes authoring plain-language documentation specifically for customers.'
+          },
+          // C-06
+          {
+            state: 'Unclear',
+            excerpt: 'Prepared technical documentation for a mixed project group.',
+            loc: 'Projects · p.1',
+            why: 'Documentation is stated, but direct client or non-technical customer interaction is unclear.'
+          }
+        ]
+      }
+    ];
+
+    // Deep clone helper for reset capability
+    function cloneData(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    // App State
+    let candidates = cloneData(INITIAL_CANDIDATES);
+    let requirements = cloneData(INITIAL_REQUIREMENTS);
+    let selectedCandidateIdx = 0;
+    let selectedRequirementIdx = 0;
+    let currentViewMode = 'cards'; // 'cards' or 'matrix'
+    let auditLog = [];
+
+    // Helper: State formatting
+    function formatStateLabel(state) {
+      if (state === 'Found') {
+        return { text: 'Evidence found', icon: '✓', cssClass: 'found' };
+      } else if (state === 'Unclear') {
+        return { text: 'Needs verification', icon: '?', cssClass: 'unclear' };
+      } else {
+        return { text: 'No evidence found in CV', icon: '—', cssClass: 'missing' };
+      }
+    }
+
+    // Toast Notification helper
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-6px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 260);
+      }, 3000);
+    }
+
+    // Calculate Evidence Coverage for a given candidate index
+    function getCandidateCoverage(cIdx) {
+      const total = requirements.length;
+      let foundCount = 0;
+      let unclearCount = 0;
+      let missingCount = 0;
+
+      requirements.forEach(req => {
+        const state = req.cells[cIdx].state;
+        if (state === 'Found') {
+          foundCount++;
+        } else if (state === 'Unclear') {
+          unclearCount++;
+        } else {
+          missingCount++;
+        }
+      });
+
+      const percentage = Math.round((foundCount / total) * 100);
+      return { total, foundCount, unclearCount, missingCount, percentage };
+    }
+
+    // Render Candidate Selector Pills
+    function renderCandidatePills() {
+      const container = document.getElementById('candidate-pills-container');
+      container.innerHTML = '';
+
+      candidates.forEach((cand, idx) => {
+        const cov = getCandidateCoverage(idx);
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.role = 'tab';
+        pill.className = `candidate-pill ${idx === selectedCandidateIdx ? 'active' : ''}`;
+        pill.setAttribute('aria-selected', idx === selectedCandidateIdx ? 'true' : 'false');
+        pill.setAttribute('aria-label', `Select Candidate ${cand.label}. Evidence coverage: ${cov.percentage}%`);
+        pill.innerHTML = `
+          <span class="pill-id">${cand.label}</span>
+          <span class="pill-role">${cand.title.split(' ')[0]}</span>
+          <span class="pill-cov">${cov.percentage}%</span>
+        `;
+        pill.addEventListener('click', () => {
+          selectCandidate(idx);
+        });
+        container.appendChild(pill);
+      });
+
+      const activeCov = getCandidateCoverage(selectedCandidateIdx);
+      document.getElementById('candidate-quick-stat').textContent =
+        `Active: ${candidates[selectedCandidateIdx].label} · ${activeCov.foundCount} of ${activeCov.total} found (${activeCov.percentage}%)`;
+    }
+
+    // Render Overview & Coverage Section
+    function renderOverview() {
+      const cand = candidates[selectedCandidateIdx];
+      const cov = getCandidateCoverage(selectedCandidateIdx);
+
+      // Meta text
+      document.getElementById('overview-candidate-id').textContent = `Candidate ${cand.label}`;
+      document.getElementById('overview-candidate-subtext').textContent = cand.subtext;
+
+      // Prominent Evidence Coverage displays
+      document.getElementById('coverage-pct-display').textContent = `${cov.percentage}%`;
+      document.getElementById('coverage-count-display').textContent =
+        `${cov.foundCount} of ${cov.total} requirements have clear CV evidence`;
+
+      // Progress bar segments
+      const pctFound = (cov.foundCount / cov.total) * 100;
+      const pctUnclear = (cov.unclearCount / cov.total) * 100;
+      const pctMissing = (cov.missingCount / cov.total) * 100;
+
+      document.getElementById('bar-found').style.width = `${pctFound}%`;
+      document.getElementById('bar-unclear').style.width = `${pctUnclear}%`;
+      document.getElementById('bar-missing').style.width = `${pctMissing}%`;
+
+      document.getElementById('leg-found').textContent = `${cov.foundCount} Found`;
+      document.getElementById('leg-unclear').textContent = `${cov.unclearCount} Unclear`;
+      document.getElementById('leg-missing').textContent = `${cov.missingCount} Not Found`;
+
+      // Strengths & Gaps Summaries (Grounded strictly in displayed evidence)
+      const strengthsList = document.getElementById('strengths-list');
+      const gapsList = document.getElementById('gaps-list');
+      strengthsList.innerHTML = '';
+      gapsList.innerHTML = '';
+
+      let hasStrengths = false;
+      let hasGaps = false;
+
+      requirements.forEach((req) => {
+        const cell = req.cells[selectedCandidateIdx];
+        if (cell.state === 'Found') {
+          hasStrengths = true;
+          const li = document.createElement('li');
+          li.className = 'summary-item strength-item';
+          li.innerHTML = `
+            <span class="summary-item-title">${req.name}</span>
+            <span class="summary-item-note">${cell.why}</span>
+          `;
+          strengthsList.appendChild(li);
+        } else {
+          hasGaps = true;
+          const li = document.createElement('li');
+          li.className = 'summary-item gap-item';
+          const label = cell.state === 'Unclear' ? 'Needs verification' : 'No evidence found in CV';
+          li.innerHTML = `
+            <span class="summary-item-title">${req.name} (${label})</span>
+            <span class="summary-item-note">${cell.why}</span>
+          `;
+          gapsList.appendChild(li);
+        }
+      });
+
+      if (!hasStrengths) {
+        strengthsList.innerHTML = `<li class="summary-item" style="color: var(--slate-500); font-style: italic;">No verified evidence found in this CV yet.</li>`;
+      }
+      if (!hasGaps) {
+        gapsList.innerHTML = `<li class="summary-item" style="color: var(--slate-500); font-style: italic;">All 5 requirements have supporting evidence in the CV.</li>`;
+      }
+    }
+
+    // Render Requirements Cards View (Mode A)
+    function renderRequirementCards() {
+      const container = document.getElementById('cards-view-container');
+      container.innerHTML = '';
+
+      requirements.forEach((req, rIdx) => {
+        const cell = req.cells[selectedCandidateIdx];
+        const stateInfo = formatStateLabel(cell.state);
+        const isSelected = rIdx === selectedRequirementIdx;
+
+        const card = document.createElement('div');
+        card.className = `req-card ${isSelected ? 'selected' : ''}`;
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+        card.setAttribute('aria-label', `Requirement ${rIdx + 1}: ${req.name}. Status: ${stateInfo.text}. Press to inspect citation.`);
+
+        card.innerHTML = `
+          <div class="req-card-top">
+            <div class="req-title-desc">
+              <span class="req-name">${req.name}</span>
+              <span class="req-jd-desc">${req.jdDesc}</span>
+            </div>
+            <span class="status-badge ${stateInfo.cssClass}">
+              ${stateInfo.icon} ${stateInfo.text}
+            </span>
+          </div>
+          <div class="req-card-bottom">
+            <div class="req-card-reason">
+              <strong>Rationale:</strong> ${cell.why}
+            </div>
+            <div class="req-inspect-action">
+              <span>${isSelected ? 'Inspecting citation' : 'Inspect citation'}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          selectRequirement(rIdx);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectRequirement(rIdx);
+          }
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    // Render All Candidates Matrix View (Mode B)
+    function renderMatrix() {
+      const tbody = document.getElementById('matrix-tbody');
+      tbody.innerHTML = '';
+
+      requirements.forEach((req, rIdx) => {
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.scope = 'row';
+        th.innerHTML = `<strong>${req.name}</strong><br><span style="font-size:0.75rem; color:var(--slate-500); font-weight:normal;">${req.jdDesc}</span>`;
+        tr.appendChild(th);
+
+        req.cells.forEach((cell, cIdx) => {
+          const td = document.createElement('td');
+          const stateInfo = formatStateLabel(cell.state);
+          const isSelected = (cIdx === selectedCandidateIdx && rIdx === selectedRequirementIdx);
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `matrix-cell-btn ${stateInfo.cssClass} ${isSelected ? 'active-cell' : ''}`;
+          btn.setAttribute('aria-label', `Candidate ${candidates[cIdx].label}, ${req.name}: ${stateInfo.text}.`);
+          btn.innerHTML = `<span>${stateInfo.icon}</span> <span>${stateInfo.text}</span>`;
+
+          btn.addEventListener('click', () => {
+            selectCandidate(cIdx);
+            selectRequirement(rIdx);
+          });
+
+          td.appendChild(btn);
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Render Inspector Column (Right Side)
+    function renderInspector() {
+      const req = requirements[selectedRequirementIdx];
+      const cell = req.cells[selectedCandidateIdx];
+      const cand = candidates[selectedCandidateIdx];
+      const stateInfo = formatStateLabel(cell.state);
+
+      document.getElementById('insp-req-tag').textContent =
+        `Requirement ${selectedRequirementIdx + 1} of ${requirements.length} · For ${cand.label}`;
+      document.getElementById('insp-req-title').textContent = req.name;
+      document.getElementById('insp-jd-desc').textContent = req.jdDesc;
+
+      // Status badge
+      const badge = document.getElementById('insp-status-badge');
+      badge.className = `status-badge ${stateInfo.cssClass}`;
+      badge.textContent = `${stateInfo.icon} ${stateInfo.text}`;
+
+      // Excerpt box & citation location
+      const quoteBox = document.getElementById('insp-quote-box');
+      const citationTag = document.getElementById('insp-citation-tag');
+
+      if (cell.excerpt && cell.excerpt.trim() !== '') {
+        quoteBox.className = 'cv-quote-box';
+        quoteBox.textContent = `“${cell.excerpt}”`;
+        citationTag.textContent = `${cand.label} CV · ${cell.loc}`;
+        citationTag.style.display = 'inline-block';
+      } else {
+        quoteBox.className = 'cv-quote-box empty';
+        quoteBox.textContent =
+          'No supporting excerpt was located for this requirement in this fictional CV. This is not proof that the candidate lacks the skill.';
+        citationTag.textContent = 'No CV Citation';
+        citationTag.style.display = 'inline-block';
+      }
+
+      // Rationale
+      document.getElementById('insp-rationale-text').textContent = cell.why;
+
+      // Question input box
+      const qInput = document.getElementById('qb-input');
+      qInput.value = req.defaultQuestion;
+
+      // Override select
+      const overrideSel = document.getElementById('override-select-state');
+      overrideSel.value = cell.state;
+
+      // Target for flag modal
+      document.getElementById('flag-modal-target').textContent = `${cand.label} · ${req.name}`;
+    }
+
+    // Selection handlers
+    function selectCandidate(idx) {
+      selectedCandidateIdx = idx;
+      renderCandidatePills();
+      renderOverview();
+      renderRequirementCards();
+      renderMatrix();
+      renderInspector();
+    }
+
+    function selectRequirement(idx) {
+      selectedRequirementIdx = idx;
+      renderRequirementCards();
+      renderMatrix();
+      renderInspector();
+    }
+
+    // Question Builder Actions
+    document.getElementById('btn-add-question').addEventListener('click', () => {
+      const qText = document.getElementById('qb-input').value.trim();
+      if (!qText) return;
+
+      const notes = document.getElementById('interviewer-notes-area');
+      const cand = candidates[selectedCandidateIdx];
+      const req = requirements[selectedRequirementIdx];
+
+      const formattedEntry = `[${cand.label} · ${req.name}]: ${qText}`;
+      if (notes.value.trim() === '') {
+        notes.value = formattedEntry;
+      } else {
+        notes.value = `${notes.value}\n\n${formattedEntry}`;
+      }
+
+      showToast(`Question for ${req.name} added to notes`);
+      // Scroll notes into slight view or flash
+      notes.focus();
+    });
+
+    document.getElementById('btn-reset-question').addEventListener('click', () => {
+      const req = requirements[selectedRequirementIdx];
+      document.getElementById('qb-input').value = req.defaultQuestion;
+      showToast('Question restored to default');
+    });
+
+    // Human Oversight: Apply Correction
+    document.getElementById('btn-apply-override').addEventListener('click', () => {
+      const newState = document.getElementById('override-select-state').value;
+      const req = requirements[selectedRequirementIdx];
+      const cell = req.cells[selectedCandidateIdx];
+      const oldState = cell.state;
+
+      if (newState === oldState) {
+        showToast('Evidence status unchanged.');
+        return;
+      }
+
+      cell.state = newState;
+      if (newState === 'Found' && !cell.excerpt) {
+        cell.excerpt = 'Interviewer confirmed equivalent experience in applicant CV notes.';
+        cell.loc = 'Interviewer Review · p.1';
+        cell.why = 'Interviewer corrected status to "Evidence found" based on context.';
+      } else if (newState === 'Unclear') {
+        cell.why = 'Status marked as "Needs verification" by interviewer for manual follow-up.';
+      } else if (newState === 'Not found in CV') {
+        cell.why = 'Interviewer verified no explicit evidence is present in the CV text.';
+      }
+
+      // Record in local audit
+      auditLog.push({
+        timestamp: new Date().toLocaleTimeString(),
+        candidate: candidates[selectedCandidateIdx].label,
+        requirement: req.name,
+        from: oldState,
+        to: newState
+      });
+
+      // Show temporary feedback banner in inspector
+      const feedbackBanner = document.getElementById('session-feedback-banner');
+      document.getElementById('feedback-banner-text').textContent =
+        `Correction applied: ${formatStateLabel(newState).text} (session memory only)`;
+      feedbackBanner.style.display = 'flex';
+      setTimeout(() => {
+        feedbackBanner.style.display = 'none';
+      }, 5000);
+
+      renderCandidatePills();
+      renderOverview();
+      renderRequirementCards();
+      renderMatrix();
+      renderInspector();
+
+      showToast(`Updated ${req.name} to ${formatStateLabel(newState).text}`);
+    });
+
+    // Flag Modal Controls
+    const flagModal = document.getElementById('modal-flag');
+    document.getElementById('btn-open-flag-modal').addEventListener('click', () => {
+      flagModal.classList.add('open');
+      document.getElementById('flag-issue-type').focus();
+    });
+
+    function closeFlagModal() {
+      flagModal.classList.remove('open');
+    }
+    document.getElementById('btn-close-flag').addEventListener('click', closeFlagModal);
+    document.getElementById('btn-cancel-flag').addEventListener('click', closeFlagModal);
+
+    document.getElementById('btn-submit-flag').addEventListener('click', () => {
+      const type = document.getElementById('flag-issue-type').value;
+      const notes = document.getElementById('flag-notes').value;
+      const cand = candidates[selectedCandidateIdx].label;
+      const req = requirements[selectedRequirementIdx].name;
+
+      auditLog.push({
+        type: 'FLAG_ISSUE',
+        timestamp: new Date().toLocaleTimeString(),
+        candidate: cand,
+        requirement: req,
+        issueType: type,
+        notes: notes
+      });
+
+      closeFlagModal();
+      document.getElementById('flag-notes').value = '';
+      showToast(`Flag recorded for ${cand} · ${req}`);
+
+      const feedbackBanner = document.getElementById('session-feedback-banner');
+      document.getElementById('feedback-banner-text').textContent =
+        `Issue flagged: "${type}". Captured for session audit.`;
+      feedbackBanner.style.display = 'flex';
+      setTimeout(() => {
+        feedbackBanner.style.display = 'none';
+      }, 5000);
+    });
+
+    // Walkthrough Guide Modal
+    const guideModal = document.getElementById('modal-guide');
+    const btnOpenGuide = document.getElementById('btn-open-guide');
+    if (btnOpenGuide) {
+      btnOpenGuide.addEventListener('click', () => {
+        guideModal.classList.add('open');
+      });
+    }
+
+    function closeGuideModal() {
+      if (guideModal) guideModal.classList.remove('open');
+    }
+    const btnCloseGuide = document.getElementById('btn-close-guide');
+    if (btnCloseGuide) btnCloseGuide.addEventListener('click', closeGuideModal);
+    const btnFinishGuide = document.getElementById('btn-finish-guide');
+    if (btnFinishGuide) btnFinishGuide.addEventListener('click', closeGuideModal);
+
+    // Notes Actions
+    document.getElementById('btn-clear-notes').addEventListener('click', () => {
+      if (confirm('Clear your current personal interview notes? This cannot be undone.')) {
+        document.getElementById('interviewer-notes-area').value = '';
+        showToast('Notes cleared');
+      }
+    });
+
+    document.getElementById('btn-copy-notes').addEventListener('click', () => {
+      const notes = document.getElementById('interviewer-notes-area').value;
+      if (!notes.trim()) {
+        showToast('Notes are empty');
+        return;
+      }
+      navigator.clipboard.writeText(notes).then(() => {
+        showToast('Notes copied to clipboard');
+      }).catch(() => {
+        showToast('Could not copy to clipboard');
+      });
+    });
+
+    document.getElementById('btn-download-notes').addEventListener('click', () => {
+      const notes = document.getElementById('interviewer-notes-area').value;
+      const cand = candidates[selectedCandidateIdx].label;
+      const content = `TRACE Interview Notes\nCandidate: ${cand}\nDate: ${new Date().toLocaleDateString()}\n\n${notes || '(No notes entered)'}`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `TRACE_Notes_${cand}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Downloaded notes file');
+    });
+
+    // Reset Demo Action
+    const btnResetDemo = document.getElementById('btn-reset-demo');
+    if (btnResetDemo) {
+      btnResetDemo.addEventListener('click', () => {
+        if (confirm('Reset prototype to original synthetic data? All local session edits and notes will be cleared.')) {
+          candidates = cloneData(INITIAL_CANDIDATES);
+          requirements = cloneData(INITIAL_REQUIREMENTS);
+          selectedCandidateIdx = 0;
+          selectedRequirementIdx = 0;
+          auditLog = [];
+          document.getElementById('interviewer-notes-area').value = '';
+
+          renderCandidatePills();
+          renderOverview();
+          renderRequirementCards();
+          renderMatrix();
+          renderInspector();
+
+          showToast('Demo reset to initial synthetic state');
+        }
+      });
+    }
+
+    // View Toggles (Cards vs Matrix)
+    const btnCards = document.getElementById('btn-view-cards');
+    const btnMatrix = document.getElementById('btn-view-matrix');
+    const cardsContainer = document.getElementById('cards-view-container');
+    const matrixContainer = document.getElementById('matrix-view-container');
+
+    btnCards.addEventListener('click', () => {
+      currentViewMode = 'cards';
+      btnCards.classList.add('active');
+      btnCards.setAttribute('aria-pressed', 'true');
+      btnMatrix.classList.remove('active');
+      btnMatrix.setAttribute('aria-pressed', 'false');
+      cardsContainer.style.display = 'flex';
+      matrixContainer.style.display = 'none';
+    });
+
+    btnMatrix.addEventListener('click', () => {
+      currentViewMode = 'matrix';
+      btnMatrix.classList.add('active');
+      btnMatrix.setAttribute('aria-pressed', 'true');
+      btnCards.classList.remove('active');
+      btnCards.setAttribute('aria-pressed', 'false');
+      cardsContainer.style.display = 'none';
+      matrixContainer.style.display = 'block';
+    });
+
+    // Close modals on Escape key or overlay click
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeGuideModal();
+        closeFlagModal();
+      }
+    });
+
+    [guideModal, flagModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('open');
+        }
+      });
+    });
+
+    // Initial Render
+    renderCandidatePills();
+    renderOverview();
+    renderRequirementCards();
+    renderMatrix();
+    renderInspector();
+  </script>
+</body>
+</html>
